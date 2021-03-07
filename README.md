@@ -1,7 +1,2 @@
-# Pretentiousnessiser
-Makes sentences more pretentious wow.
-
-```
-pipenv install 
-pipenv run lol.py
-```
+Increase pretentiousless of text.
+https://stolmen.github.io/make-text-more-pretentious/
