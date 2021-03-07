@@ -1,10 +1,14 @@
 "use strict";
 
-
 function randomlySelect(array) {
-    // randomly select an item from the input array
     const idx = Math.floor(array.length * Math.random());
     return array[idx];
+}
+
+// Plagiarised from
+// https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+function capitalise(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function makeWordPretentious(inputWord, idx, array) {
@@ -13,20 +17,21 @@ function makeWordPretentious(inputWord, idx, array) {
     fetch(`https://api.datamuse.com/words?ml=${inputWord}`)
         .then(response => response.json())
         .then(response => {
-            // response is an array of results.
-            // each result has fields 'word', 'score' and 'tags'
+            const inputCapitalised = inputWord[0] === inputWord[0].toUpperCase();
             const filtered = response.filter(x => x.score > 69000);
             let outputWord;
+
             if (!filtered.length) {
                 outputWord = inputWord;
             } else {
                 outputWord = randomlySelect(filtered).word;
             }
 
-            // now set things
+            if (inputCapitalised) {
+                outputWord = capitalise(outputWord);
+            }
             array[idx] = outputWord;
 
-            // update output element I guess
             document.getElementById('pretentious-text').innerText = array.join(' ');
         });
 }
@@ -34,6 +39,4 @@ function makeWordPretentious(inputWord, idx, array) {
 function onButtonClick() {
     const input = document.getElementById('input-text').value;
     input.split(' ').forEach(makeWordPretentious);
-
-    // document.getElementById('pretentious-text').innerText = makeStringPretentious(input);
 }
